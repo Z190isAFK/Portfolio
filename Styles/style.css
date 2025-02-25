@@ -1,0 +1,530 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap');
+
+/* Variables CSS pour les thèmes */
+:root {
+    /* Mode nuit (par défaut) */
+    --bg-body: linear-gradient(to right, rgb(26, 67, 130), rgb(0, 14, 34));
+    --bg-header: rgba(15, 20, 30, 0.9);
+    --text-color: white;
+    --link-hover: rgb(0, 140, 255);
+    --dropdown-bg: rgb(32, 48, 69);
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --section-bg: rgba(255, 255, 255, 0.1);
+    --text-secondary: #ccc;
+    --highlight-color: rgb(0, 140, 255);
+    --active-border: rgb(0, 115, 255);
+    --liquid-color: rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="day"] {
+    /* Mode jour */
+    --bg-body: linear-gradient(to right, rgb(253, 254, 229), rgb(184, 237, 255));
+    --bg-header: rgba(255, 255, 255, 0.9);
+    --text-color: #333;
+    --link-hover: rgb(0, 102, 204);
+    --dropdown-bg: rgb(245, 245, 245);
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --section-bg: rgba(255, 255, 255, 0.8);
+    --text-secondary: #666;
+    --highlight-color: rgba(0, 102, 204, 0);
+    --active-border: rgb(0, 102, 204);
+    --liquid-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Animation pour l’effet de liquide */
+@keyframes liquidDrop {
+    0% {
+        height: 0;
+        opacity: 0;
+        transform: translateY(-100%) scaleY(0.5);
+    }
+    50% {
+        height: 100vh;
+        opacity: 0.8;
+        transform: translateY(0) scaleY(1);
+    }
+    100% {
+        height: 100vh;
+        opacity: 0;
+        transform: translateY(0) scaleY(1);
+    }
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background-color: var(--liquid-color);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    animation: liquidDrop 1.5s ease-out forwards;
+    display: none;
+}
+
+body.liquid-animation::after {
+    display: block !important; /* Force l’affichage pendant l’animation */
+    animation: liquidDrop 1.5s ease-out forwards;
+}
+
+body:not(.liquid-animation)::after {
+    display: none; /* Retour à l’état initial après l’animation */
+}
+
+/* Styles généraux */
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    background: var(--bg-body);
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    width: 100%;
+    background-color: var(--bg-header);
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    height: 80px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.logo {
+    color: var(--text-color);
+    font-size: 2rem;
+    font-weight: bolder;
+    padding: 20px;
+}
+
+.logo span {
+    color: var(--highlight-color);
+    text-shadow: 0 0 10px var(--highlight-color);
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 4%;
+    padding: 10px 2%;
+    flex-wrap: nowrap;
+    height: 100%;
+    align-items: center;
+}
+
+nav a, .theme-btn {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 0;
+    color: var(--text-color);
+    font-size: 1.2rem;
+    font-weight: 500;
+    transition: 0.3s linear;
+}
+
+nav a:hover {
+    color: var(--link-hover);
+}
+
+nav .active {
+    border-bottom: 3px solid var(--active-border);
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: -70px;
+    left: 0;
+    background-color: var(--dropdown-bg);
+    width: 200px;
+    box-shadow: 0 0 10px var(--shadow-color);
+    z-index: 100;
+    margin-top: 100px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px;
+    color: var(--text-color);
+    transition: 0.3s;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--section-bg);
+}
+
+.submenu {
+    position: relative;
+}
+
+.submenu-content {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 200px;
+    background-color: var(--dropdown-bg);
+    width: 200px;
+    box-shadow: 0 0 10px var(--shadow-color);
+}
+
+.submenu:hover .submenu-content {
+    display: block;
+}
+
+.theme-btn {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.theme-btn:hover {
+    color: var(--link-hover);
+}
+
+.acceuil {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-color);
+    margin-top: 80px; /* Ajusté pour éviter le chevauchement avec la navbar fixe */
+}
+
+.acceuil-content {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    width: 80%;
+    max-width: 1200px;
+}
+
+.acceuil-img img {
+    width: 100%;
+    max-width: 700px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px var(--shadow-color);
+}
+
+.text-content {
+    font-size: 30px;
+    margin-left: 30px;
+    margin-bottom: 80px;
+}
+
+.typing-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.typing-text span {
+    color: var(--text-color);
+    text-shadow: 0 0 10px var(--highlight-color);
+}
+
+.acceuil-content p {
+    font-size: 1rem;
+    margin: 10px 0;
+    color: var(--text-secondary);
+}
+
+.social-icon {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.social-icon a {
+    color: var(--text-color);
+    text-shadow: 0 0 10px var(--highlight-color);
+    font-size: 2rem;
+    transition: 0.3s;
+}
+
+.social-icon a:hover {
+    color: var(--link-hover);
+    padding: 0;
+    border-radius: 0;
+}
+
+@media (max-width: 884px) {
+    nav {
+        flex-direction: column;
+        align-items: center;
+        padding: 5px 2%;
+    }
+
+    nav a, .theme-btn {
+        white-space: nowrap;
+        width: 100%;
+        text-align: center;
+        padding: 5px 0;
+    }
+
+    nav .dropdown-content {
+        width: 100%;
+        position: relative;
+    }
+
+    .acceuil {
+        margin-top: 60px;
+    }
+
+    .acceuil-content {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .text-content {
+        margin-left: 0;
+        margin-bottom: 40px;
+        font-size: 24px;
+    }
+
+    .acceuil-img img {
+        width: 80%;
+        margin-bottom: 20px;
+    }
+
+    .social-icon a {
+        font-size: 1.5rem;
+    }
+}
+
+/* Styles spécifiques pour la page 404 */
+.error-404 {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+    background: var(--bg-body);
+    text-align: center;
+    padding: 20px;
+    position: relative;
+}
+
+.error-code {
+    font-size: 10rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px var(--highlight-color);
+    color: var(--text-color);
+}
+
+.error-message {
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+}
+
+.error-return {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--text-color);
+}
+
+.error-return a {
+    color: var(--highlight-color);
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.error-return a:hover {
+    color: var(--link-hover);
+    text-shadow: 0 0 10px var(--highlight-color);
+}
+
+/* Ajustements pour mobile */
+@media (max-width: 884px) {
+    .error-code {
+        font-size: 6rem;
+    }
+
+    .error-message {
+        font-size: 1.5rem;
+    }
+
+    .error-return {
+        font-size: 1.2rem;
+    }
+}
+
+/* --- Début Études --- */
+.parcours {
+    margin-top: 45px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-color);
+    margin-bottom: 60px; /* Espace avant le footer */
+}
+
+.titre-principal {
+    font-size: 2.2rem;
+    color: var(--text-color);
+    margin-right: 885px;
+    text-shadow: 0 0 10px var(--highlight-color);
+}
+
+.parcours-container {
+    display: flex;
+    justify-content: space-around;
+    width: 90%;
+    max-width: 90%;
+    margin-top: 20px;
+}
+
+.section {
+    flex: 1;
+    background-color: var(--section-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px var(--shadow-color);
+    margin: 0 10px;
+    min-width: 0; /* Pour éviter le débordement */
+}
+
+.titre-section {
+    font-size: 2rem;
+    color: var(--text-color);
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px var(--highlight-color);
+}
+
+.nom-ecole, .annees, .description {
+    margin: 5px 0;
+    font-size: 1.1rem;
+}
+
+.nom-ecole {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.annees {
+    font-style: italic;
+    color: var(--text-color); /* Restauré pour cohérence */
+}
+
+.description {
+    color: var(--text-secondary);
+}
+
+@media (max-width: 884px) {
+    .parcours {
+        margin-top: 30px;
+        margin-bottom: 40px;
+    }
+
+    .parcours-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .section {
+        width: 90%;
+        padding: 15px;
+        margin: 10px 0;
+    }
+
+    .titre-section {
+        font-size: 1.8rem;
+    }
+
+    .nom-ecole, .annees, .description {
+        font-size: 1rem;
+    }
+}
+/* --- Fin Études --- */
+
+/* Styles pour le footer */
+footer {
+    width: 100%;
+    background-color: var(--bg-header);
+    position: relative; /* Changé de fixed à relative pour éviter les problèmes de taille */
+    bottom: 0;
+    z-index: 5;
+    padding: 8px 0;
+    text-align: center;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+footer p {
+    color: var(--text-color);
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.footer-social {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.footer-social a {
+    color: var(--text-color);
+    font-size: 1.5rem;
+    transition: 0.3s;
+}
+
+.footer-social a:hover {
+    color: var(--link-hover);
+
+}
+
+/* Ajustements pour mobile */
+@media (max-width: 884px) {
+    footer {
+        padding: 15px 0;
+    }
+
+    footer p {
+        font-size: 0.9rem;
+    }
+
+    .footer-social a {
+        font-size: 1.2rem;
+    }
+}
